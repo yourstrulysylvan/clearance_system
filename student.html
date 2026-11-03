@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Semestral Clearance</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+:root{--bg:#fff;--fg:#212529;--mut:#6c757d;--line:#dee2e6;--head:#e9ecef;--red:#a52a2a;--btn:#dc3545;--ok:#198754;--bad:#c62828;--card:#f8f9fa;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#1a1b1e;--fg:#e6e6e6;--mut:#a0a4a8;--line:#3a3d42;--head:#2b2e33;--red:#ff8a80;--btn:#c62f3d;--ok:#5fd08f;--bad:#ff8a80;--card:#23252a}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#1a1b1e;--fg:#e6e6e6;--mut:#a0a4a8;--line:#3a3d42;--head:#2b2e33;--red:#ff8a80;--btn:#c62f3d;--ok:#5fd08f;--bad:#ff8a80;--card:#23252a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"Source Sans 3","Source Sans Pro",Segoe UI,Arial,sans-serif;font-size:16px;line-height:1.5}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+h1{color:var(--red);font-weight:400;font-size:28px;margin:4px 0 12px}
+h3{font-weight:600;margin:20px 0 6px}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:12px 0}
+label{font-size:18px}
+select,input{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:6px 10px}
+.btn{background:var(--btn);color:#fff;border:0;border-radius:5px;padding:8px 14px;cursor:pointer;font:inherit}
+.btn.alt{background:var(--bg);color:var(--fg);border:1px solid var(--line)}
+.info{color:var(--mut);margin:14px 0;padding:10px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.info b{font-weight:600;color:var(--mut)}.info span{color:var(--fg);margin-left:6px}
+.tw{overflow-x:auto;border-top:2px solid var(--red)}
+table{width:100%;border-collapse:collapse;min-width:640px}
+th{background:var(--head);text-align:left;padding:8px;font-weight:600}
+td{padding:8px;border-bottom:1px solid var(--line)}
+td:first-child{color:var(--mut)}
+.c-ok{color:var(--ok)}.c-no{color:var(--bad)}
+.banner,.box{margin:14px 0;padding:10px 14px;border-radius:6px;background:var(--card);border:1px solid var(--line)}
+.box{max-width:460px;margin:30px auto}
+.box .row{margin:10px 0}
+.box select,.box input{flex:1;min-width:160px}
+td input[type=text],td input[type=number]{width:100%;min-width:90px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.err{color:var(--bad);min-height:1.4em}
+.hide{display:none}
+@media print{.top,.row,.noprint{display:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1 id="ttl">Semestral Clearance</h1>
+
+<div id="login" class="box">
+<div class="row" id="hint" style="color:var(--mut)">Log in with your student name or ID number.</div>
+<div class="row" id="fs"><input id="sin" type="text" placeholder="Username"></div>
+
+<div class="row" id="fp"><input id="pw" type="password" placeholder="Password"></div>
+<div class="row"><button class="btn" id="go">Log in</button></div>
+<div class="err" id="err"></div>
+</div>
+
+<div id="app" class="hide">
+<div class="top"><div id="who"></div><button class="btn alt" id="out">Log out</button></div>
+
+<div id="pS" class="hide">
+<div class="row"><label for="per">Choose Period:</label><select id="per"></select>
+<button class="btn" id="show">Show Clearance</button><button class="btn alt" id="print">Print</button></div>
+<div class="info" id="info"></div><div id="banner"></div>
+<div class="tw"><table><thead><tr><th>#</th><th>Signatory Name</th><th>Office Name</th><th>Clearance</th><th>Amount Due</th><th>Remarks</th></tr></thead><tbody id="tb1"></tbody></table></div>
+</div>
+
+<div id="pG" class="hide">
+<div class="row"><label for="per2">Period:</label><select id="per2"></select>
+<input id="q" type="text" placeholder="Search name or ID number">
+<button class="btn alt" id="all">Mark all shown as cleared</button></div>
+<div class="tw"><table><thead><tr><th>#</th><th>ID Number</th><th>Student</th><th>Program/Year</th><th>Clearance</th><th>Amount Due</th><th>Remarks</th></tr></thead><tbody id="tb2"></tbody></table></div>
+<h3>Change my passcode</h3>
+<div class="row"><input id="np1" type="password" placeholder="New passcode (4+ characters)"><button class="btn alt" id="cp">Change</button><span id="cpm" class="err"></span></div>
+</div>
+
+<div id="pA" class="hide">
+<h3>Add student</h3>
+<div class="row"><input id="as" type="text" placeholder="ID number (24-01885)" size="14"><input id="an" type="text" placeholder="Full name" size="24"><input id="ap" type="text" placeholder="Program" size="8"><input id="ay" type="number" min="1" max="6" placeholder="Year" style="width:80px"><button class="btn" id="add">Add</button><span class="err" id="am"></span></div>
+<h3>Students</h3>
+<div class="tw"><table><thead><tr><th>#</th><th>ID Number</th><th>Name</th><th>Program/Year</th><th></th></tr></thead><tbody id="tb3"></tbody></table></div>
+<h3>Signatory passcodes</h3>
+<div class="row"><select id="rs"></select><button class="btn alt" id="rp">Reset to 1234</button><button class="btn alt" id="rd">Reset all demo data</button></div>
+</div>
+</div>
+</div>
+
+<script>
+var SIG=[["Canteen/Auxiliary","Canteen/Auxiliary"],["CAS Dean","College of Arts and Sciences"],["CAS-SO President","CAS Student’s Organization"],["CAS-SO Treasurer","CAS Student’s Organization"],["Dean of OSA","Dean of Student’s Affairs Office"],["Dental","Dental Clinic"],["Finance","Finance Office"],["Guidance","Guidance Center"],["ICONS President","ICONS"],["ICONS Treasurer","ICONS"],["Library","Educational Resource Center"],["Medical","Medical Office"],["SSC President","Supreme Student’s Council"],["SSC Treasurer","Supreme Student’s Council"],["X-Ray","X-Ray Office"]];
+var PERIODS=["1st Semester/Trimester 2026-2027","2nd Semester/Trimester 2025-2026","1st Semester/Trimester 2025-2026"];
+var KEY="clearance_v2",db,S=null;
+function seed(){var p=[];for(var i=0;i<15;i++)p.push("1234");
+return{students:[{sin:"24-01885",name:"Melisa Natividad",prog:"BSCS",yr:3},{sin:"24-00470",name:"Eloisa D. Lomboy",prog:"BSCS",yr:3},{sin:"24-01925",name:"Christine Shielsie T. Guillermo",prog:"BSCS",yr:3}],rec:{},pass:p,admin:"admin123"}}
+function load(){try{var t=localStorage.getItem(KEY);if(t){db=JSON.parse(t);if(db&&db.students&&db.pass)return}}catch(e){}db=seed()}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}}
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function find(sin){return db.students.filter(function(s){return s.sin==sin})[0]}
+function rec(sin,per,i){return db.rec[sin+"|"+per+"|"+i]||{s:"Not Cleared",a:0,r:""}}
+function setRec(sin,per,i,p){var r=rec(sin,per,i);for(var k in p)r[k]=p[k];db.rec[sin+"|"+per+"|"+i]=r;save()}
+function opts(a,sel){return a.map(function(v,i){return '<option value="'+i+'"'+(i==sel?" selected":"")+'>'+esc(v)+'</option>'}).join("")}
+function init(){var n=SIG.map(function(x){return x[0]});$("per").innerHTML=opts(PERIODS,0);$("per2").innerHTML=opts(PERIODS,0);$("rs").innerHTML=opts(SIG.map(function(x){return x[0]+" (username: "+slug(x[0])+")"}),0)}
+function slug(s){return String(s).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
+function portal(){var f=location.hash=="#signatory";$("ttl").textContent=f?"Semestral Clearance · Signatory Portal":"Semestral Clearance";document.title=$("ttl").textContent;$("hint").textContent=f?"Signatory and admin login only.":"Log in with your student name or ID number.";$("err").textContent=""}
+window.addEventListener("hashchange",function(){S=null;$("app").classList.add("hide");$("login").classList.remove("hide");$("sin").value="";$("pw").value="";portal()});
+function panel(id){["pS","pG","pA"].forEach(function(p){$(p).classList.toggle("hide",p!=id)})}
+$("go").onclick=function(){var e=$("err");e.textContent="";var u=$("sin").value.trim().toLowerCase(),p=$("pw").value,r="",si=-1;SIG.forEach(function(x,i){if(slug(x[0])==slug(u))si=i});var st=db.students.filter(function(x){return x.sin==u||x.name.toLowerCase()==u})[0];if(u=="admin")r="admin";else if(si>-1)r="sig";else if(st)r="student";if(location.hash=="#signatory"?r=="student":r!="student")r="";if(!r){e.textContent="Wrong username or password.";return}
+if(r=="student"){var u=$("sin").value.trim().toLowerCase(),s=db.students.filter(function(x){return x.sin==u||x.name.toLowerCase()==u})[0];if(!s||$("pw").value.trim()!==s.sin){e.textContent="Wrong name/ID number or password.";return}S={role:"student",sin:s.sin}}
+else if(r=="sig"){var i=si;if(p!==db.pass[i]){e.textContent="Wrong username or password.";return}S={role:"sig",i:i}}
+else{if(p!==db.admin){e.textContent="Wrong username or password.";return}S={role:"admin"}}
+$("login").classList.add("hide");$("app").classList.remove("hide");$("pw").value="";enter()};
+$("sin").onkeydown=$("pw").onkeydown=function(e){if(e.key=="Enter")$("go").click()};
+$("out").onclick=function(){S=null;$("sin").value="";$("pw").value="";$("app").classList.add("hide");$("login").classList.remove("hide")};
+function enter(){
+if(S.role=="student"){var s=find(S.sin);$("who").innerHTML="<b>"+esc(s.name)+"</b> ("+esc(s.sin)+")";panel("pS");show()}
+else if(S.role=="sig"){$("who").innerHTML="<b>"+esc(SIG[S.i][0])+"</b> · "+esc(SIG[S.i][1]);panel("pG");staff()}
+else{$("who").innerHTML="<b>Admin</b>";panel("pA");admin()}}
+function show(){
+var s=find(S.sin),per=PERIODS[$("per").value||0];
+$("info").innerHTML='<div><b>Student:</b><span>'+esc(s.name)+' ('+esc(s.sin)+')</span></div><div><b>Academic Year &amp; Semester:</b><span>'+esc(per)+'</span></div><div><b>Program/Year Level:</b><span>'+esc(s.prog)+'-'+s.yr+'</span></div>';
+var tot=0,done=0,h="";
+SIG.forEach(function(x,i){var r=rec(s.sin,per,i),ok=r.s=="Cleared";if(ok)done++;tot+=Number(r.a)||0;
+h+='<tr><td>'+(i+1)+'</td><td>'+esc(x[0])+'</td><td>'+esc(x[1])+'</td><td class="'+(ok?"c-ok":"c-no")+'">'+r.s+'</td><td>'+(Number(r.a)||0).toFixed(2)+'</td><td>'+(r.r?esc(r.r):"-")+'</td></tr>'});
+$("tb1").innerHTML=h;
+$("banner").innerHTML='<div class="banner">'+(done==15&&tot==0?'<b class="c-ok">Fully cleared</b> for this period.':'<b class="c-no">Not yet cleared</b>: '+done+' of 15 signatories cleared. Total amount due: '+tot.toFixed(2))+'</div>'}
+$("show").onclick=show;$("per").onchange=show;$("print").onclick=function(){try{window.print()}catch(e){}};
+function shown(){var q=$("q").value.trim().toLowerCase();return db.students.filter(function(s){return !q||s.name.toLowerCase().indexOf(q)>-1||s.sin.indexOf(q)>-1})}
+function staff(){
+var i=S.i,per=PERIODS[$("per2").value||0],h="";
+shown().forEach(function(s,n){var r=rec(s.sin,per,i);
+h+='<tr><td>'+(n+1)+'</td><td>'+esc(s.sin)+'</td><td>'+esc(s.name)+'</td><td>'+esc(s.prog)+'-'+s.yr+'</td>'
++'<td><select data-k="s" data-id="'+esc(s.sin)+'"><option'+(r.s=="Cleared"?" selected":"")+'>Cleared</option><option'+(r.s!="Cleared"?" selected":"")+'>Not Cleared</option></select></td>'
++'<td><input type="number" min="0" step="0.01" data-k="a" data-id="'+esc(s.sin)+'" value="'+(Number(r.a)||0)+'"></td>'
++'<td><input type="text" data-k="r" data-id="'+esc(s.sin)+'" value="'+esc(r.r)+'" placeholder="Remarks"></td></tr>'});
+$("tb2").innerHTML=h||'<tr><td colspan="7">No students found.</td></tr>'}
+$("per2").onchange=staff;$("q").oninput=staff;
+$("tb2").addEventListener("change",function(e){var t=e.target,k=t.dataset.k;if(!k||!S||S.role!="sig")return;
+var p={};p[k]=k=="a"?Math.max(0,Number(t.value)||0):t.value;setRec(t.dataset.id,PERIODS[$("per2").value||0],S.i,p)});
+$("all").onclick=function(){var per=PERIODS[$("per2").value||0];shown().forEach(function(s){setRec(s.sin,per,S.i,{s:"Cleared"})});staff()};
+$("cp").onclick=function(){var v=$("np1").value,m=$("cpm");if(v.length<4){m.textContent="Use at least 4 characters.";return}db.pass[S.i]=v;save();$("np1").value="";m.textContent="";m.className="c-ok";m.textContent="Passcode changed."};
+function admin(){
+$("tb3").innerHTML=db.students.map(function(s,n){return '<tr><td>'+(n+1)+'</td><td>'+esc(s.sin)+'</td><td>'+esc(s.name)+'</td><td>'+esc(s.prog)+'-'+s.yr+'</td><td><button class="btn alt" data-del="'+esc(s.sin)+'">Remove</button></td></tr>'}).join("")||'<tr><td colspan="5">No students.</td></tr>'}
+$("add").onclick=function(){var sin=$("as").value.trim(),n=$("an").value.trim(),p=$("ap").value.trim().toUpperCase(),y=parseInt($("ay").value,10),m=$("am");
+if(!/^\d{2}-\d{5}$/.test(sin)){m.textContent="ID number must look like 24-01885.";return}
+if(find(sin)){m.textContent="That ID number already exists.";return}
+if(!n||!p||!y){m.textContent="Fill in every field.";return}
+db.students.push({sin:sin,name:n,prog:p,yr:y});save();m.textContent="";["as","an","ap","ay"].forEach(function(i){$(i).value=""});admin()};
+$("tb3").addEventListener("click",function(e){var d=e.target.dataset.del;if(!d||!confirm("Remove "+d+" and all their clearance records?"))return;
+db.students=db.students.filter(function(s){return s.sin!=d});Object.keys(db.rec).forEach(function(k){if(k.indexOf(d+"|")==0)delete db.rec[k]});save();admin()});
+$("rp").onclick=function(){db.pass[+$("rs").value]="1234";save();alert("Passcode reset to 1234.")};
+$("rd").onclick=function(){if(confirm("Reset ALL data and passcodes to the starting set?")){db=seed();save();admin()}};
+load();init();portal();
+</script>
+</body>
+</html>
